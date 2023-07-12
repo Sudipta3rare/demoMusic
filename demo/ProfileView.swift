@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ProfileView: View {
+    @State var goToSettings = false
     var body: some View{   VStack(spacing: 20){
         HStack(spacing: 20){
             Text("Y")
@@ -19,7 +20,9 @@ struct ProfileView: View {
             Text("My Profile").font(.custom("Poppins-Regular", size: 20))
             Spacer()
             Image(systemName: "magnifyingglass").fontWeight(.bold)
-            Image(systemName: "gearshape.fill")
+            NavigationLink(destination: SettingsView(),label: {
+                Image(systemName: "gearshape.fill")
+            })
         }
         HStack {
             Button("Profile"){}.padding(.horizontal,20)
