@@ -23,7 +23,7 @@ struct GeolocationView: View {
                 Button{
                     self.presentationMode.wrappedValue.dismiss()
                 }label:{
-                    Image(systemName: "arrow.left.circle.fill").font(.system(size: 20)).foregroundColor(.white).transition(.offset(x:0, y:850))
+                    Image(systemName: "arrow.left.circle.fill").font(.system(size: 20)).foregroundStyle(.white,Color(hex: 0xa8222b)).transition(.offset(x:0, y:850))
                 }
                 Image("logo01").resizable().aspectRatio(contentMode: .fit).frame(height: 50).padding(.bottom)
             }

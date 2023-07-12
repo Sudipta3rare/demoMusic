@@ -73,7 +73,7 @@ struct MusicianPlaylistView: View {
                     .padding(.horizontal)
                     Button{
                         self.presentationMode.wrappedValue.dismiss()
-                    }label:{ Image(systemName: "arrow.left.circle.fill").font(.system(size: 30)).foregroundColor(.white).frame(maxHeight: .infinity, alignment: .top).padding()}
+                    }label:{ Image(systemName: "arrow.left.circle.fill").font(.system(size: 30)).foregroundStyle(.white,Color(hex: 0xa8222b)).frame(maxHeight: .infinity, alignment: .top).padding()}
                 }
                 subButttons
      

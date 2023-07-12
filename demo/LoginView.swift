@@ -12,6 +12,7 @@ struct LoginView: View {
     @StateObject var lvm = LoginViewModel()
     
     init() {
+        
         UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: UIFont(name: "Poppins-Regular", size: 12)!], for: .normal)
         UITabBar.appearance().barTintColor = .white
         UITabBar.appearance().backgroundColor = UIColor(hexString: "#2e2e2e")
@@ -27,7 +28,7 @@ struct LoginView: View {
                                 .font(.custom("Righteous", size: 25))
                             VStack
                             {
-                                TextField("Email", text: $lvm.username)
+                                TextField("Email", text: $lvm.user)
                                     .padding()
                                     .textInputAutocapitalization(.never)
                                     .font(.custom("Poppins-Regular", size: 15))
@@ -36,14 +37,25 @@ struct LoginView: View {
                                     .font(.custom("Poppins-Regular", size: 15))
                                     .padding(.leading)
                                     .padding(.trailing)
+                                
+                                lvm.validMessage ? HStack {
+                                    Text("")
+                                    Spacer()
+                                }.frame(alignment: .leading).padding(.horizontal)
+                                : HStack {
+                                    Text("*Enter valid inputs").font(.custom("Poppins-Regular", size: 12)).foregroundColor(.red)
+                                    Spacer()
+                                }.frame(alignment: .leading).padding(.horizontal)
+                                
                                 Button("Forgot Password?"){}
                                     .frame(alignment: .leading)
                                     .font(.custom("Poppins-Italic", size: 15))
-                                    .foregroundColor(Color(hex: 0x848484))
-                                Spacer().frame(height: 110)
+                                    .foregroundColor(Color(hex: 0x848484)).padding(.vertical)
+                                Spacer().frame(height: 90)
                                 Button {
                                     print("Button pressed")
-                                    lvm.authenticate()
+//                                    lvm.authenticate()
+                                        lvm.loginPost()
                                 } label: {
                                     Text("Login").font(.custom("Poppins-Regular", size: 18))
                                         .padding(.horizontal, 100)
@@ -78,7 +90,7 @@ struct LoginView: View {
                                 
                             }
                             .frame(
-                            height: 430)
+                            height: 490)
                             .background()
                                 .cornerRadius(30)
                             
