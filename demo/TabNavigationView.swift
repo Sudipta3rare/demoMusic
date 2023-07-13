@@ -44,16 +44,23 @@ struct TabNavigationView: View {
                             Text("Home").tag(0)
                             
                         }
-                        Text("Friends Screen")
+                        NavigationStack{
+                            ZStack(alignment: .leading){
+                                Image("bg02").resizable().ignoresSafeArea()
+                                ScrollView{
+                                    VideoView()
+                                }
+                            }
+                        }
                             .tabItem {
                                 Image(systemName: "video.fill")
                                 Text("Videos").tag(1)
                             }
-                        Text("Nearby Screen")
-                            .tabItem {
-                                Image(systemName: "magnifyingglass")
-                                Text("Search").tag(2)
-                            }
+//                        Text("Nearby Screen")
+//                            .tabItem {
+//                                Image(systemName: "magnifyingglass")
+//                                Text("Search").tag(2)
+//                            }
                         NavigationStack{
                             ZStack(alignment: .leading){
                                 Image("bg06").resizable().ignoresSafeArea(.all)

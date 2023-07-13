@@ -12,6 +12,7 @@ struct LibraryView: View {
     @StateObject var lvm : LibraryViewModel
     @State private var showThirdView = false
     @State  var createPlaylist = false
+    
     var body: some View{
     
      
@@ -44,8 +45,6 @@ struct LibraryView: View {
                                         .padding(.vertical)
                                     Spacer()
                                 }
-                                   
-                            
                                     Button{
                                         self.presentationMode.wrappedValue.dismiss()
                                                     DispatchQueue.main.async {
@@ -90,22 +89,27 @@ struct LibraryView: View {
                     }.foregroundColor(.white)
                         .padding(.horizontal)
                     HStack{
-                        Button("Playlist"){}.padding(.horizontal,20)
-                            .padding(.vertical,5).background(Color(hex: 0xa8222b))
-                            .foregroundColor(.white)
-                            .font(.custom("Poppins-Regular", size: 12)).cornerRadius(16)
-                        
-                        Button("Favorite"){}
-                            .padding(.vertical,5)
-                            .padding(.horizontal,30)
-                            .background(Color(hex: 0x2c90b5))
-                            .foregroundColor(.white)
-                            .font(.custom("Poppins-Regular", size: 12)).cornerRadius(16)
+                        NavigationLink( destination: TopSongsView(), label:{Text("Playlist").padding(.horizontal,20)
+                                .padding(.vertical,5).background(Color(hex: 0xa8222b))
+                                .foregroundColor(.white)
+                                .font(.custom("Poppins-Regular", size: 12)).cornerRadius(16)
+                        })
+                        NavigationLink(destination: UserFavPlaylistView(),
+                                       label:{
+                            Text("Favorite")
+                                .padding(.vertical,5)
+                                .padding(.horizontal,30)
+                                .background(Color(hex: 0x2c90b5))
+                                .foregroundColor(.white)
+                                .font(.custom("Poppins-Regular", size: 12)).cornerRadius(16)
+                        }
+                        )
                     }.padding(.horizontal)
-                    
+                 
                     Button{
                         
-                    } label: {HStack {
+                    } label: {
+                        HStack {
                         Image(systemName: "arrow.up").font(.system(size: 12)).padding(.trailing,-10)
                         Image(systemName: "arrow.down").font(.system(size: 12))
                         Text("Recent").font(.custom("Poppins-Regular", size: 12))

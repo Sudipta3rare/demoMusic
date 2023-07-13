@@ -175,14 +175,18 @@ struct eventListTile : View{
                 Text(event.name).font(.custom("Poppins-Regular", size: 12))
             }
             Spacer()
-            Text("Book Tickets")
-                .padding(.horizontal)
-                .padding(.vertical,5)
-                .font(.custom("Poppins-Regular", size: 12))
-                .foregroundColor(.white)
-                .background(Color(hex: 0xa8222b))
-                .clipShape(RoundedRectangle(cornerRadius: 15))
-                .padding(.horizontal)
+            NavigationLink(destination: ConcertsView(), 
+                label: {
+                    Text("Book Tickets")
+                        .padding(.horizontal)
+                        .padding(.vertical,5)
+                        .font(.custom("Poppins-Regular", size: 12))
+                        .foregroundColor(.white)
+                        .background(Color(hex: 0xa8222b))
+                        .clipShape(RoundedRectangle(cornerRadius: 15))
+                        .padding(.horizontal)
+                }
+            )
         }.foregroundColor(.white).padding(.horizontal)
     }
 }
