@@ -20,13 +20,19 @@ struct TopSongsView: View {
                     Image(systemName: "arrow.left.circle.fill").font(.system(size: 35)).foregroundStyle(.white, Color(hex: 0xbd3c40)).transition(.offset(x:0, y:850))
                 }.frame(maxHeight: .infinity, alignment: .top).padding(.vertical)
                 Spacer()
-                optionButton
+               NavigationLink (
+                destination: AlbumDetailsView(),
+                label:{
+                        Image(systemName: "info.circle")
+                    }
+                )
+                
             }.padding(.horizontal)
     }
     
     var body: some View {
         ZStack(alignment: .leading){
-            Image("bg02").resizable().ignoresSafeArea(.all)
+            Image("bg12").resizable().ignoresSafeArea(.all)
             
             ScrollView{
                 headingBack.padding(.bottom)

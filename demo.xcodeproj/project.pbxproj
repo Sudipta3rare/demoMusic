@@ -24,6 +24,7 @@
 		7F8D16F62A554A880021C994 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8D16F52A554A880021C994 /* Utils.swift */; };
 		7F8D16FB2A5566E40021C994 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8D16FA2A5566E40021C994 /* HomeView.swift */; };
 		7F8D71932A57CD3D005A31F2 /* Login-Signup ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8D71922A57CD3C005A31F2 /* Login-Signup ViewModel.swift */; };
+		7F8F197B2A6101C7003EA414 /* AlbumDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8F197A2A6101C7003EA414 /* AlbumDetailsView.swift */; };
 		7F9B35162A5C374100834CB6 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9B35152A5C374100834CB6 /* LibraryView.swift */; };
 		7FBBB5C72A5FB4E300F7F785 /* ConcertsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FBBB5C62A5FB4E300F7F785 /* ConcertsView.swift */; };
 		7FBBB5CA2A5FC20500F7F785 /* UserFavPlaylistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FBBB5C92A5FC20500F7F785 /* UserFavPlaylistView.swift */; };
@@ -78,6 +79,7 @@
 		7F8D16F52A554A880021C994 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		7F8D16FA2A5566E40021C994 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		7F8D71922A57CD3C005A31F2 /* Login-Signup ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Login-Signup ViewModel.swift"; sourceTree = "<group>"; };
+		7F8F197A2A6101C7003EA414 /* AlbumDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumDetailsView.swift; sourceTree = "<group>"; };
 		7F9B35152A5C374100834CB6 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
 		7FBBB5C62A5FB4E300F7F785 /* ConcertsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcertsView.swift; sourceTree = "<group>"; };
 		7FBBB5C92A5FC20500F7F785 /* UserFavPlaylistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFavPlaylistView.swift; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				7F35AF2F2A601BFE007AB06F /* TopSongsView.swift */,
+				7F8F197A2A6101C7003EA414 /* AlbumDetailsView.swift */,
 			);
 			name = Top10SongsView;
 			sourceTree = "<group>";
@@ -504,6 +507,7 @@
 				7FBBB5C72A5FB4E300F7F785 /* ConcertsView.swift in Sources */,
 				7FE24D8E2A53F113002AFB22 /* ContentView.swift in Sources */,
 				7F59C6732A5C03F0004EC5C2 /* MusicianInfoView.swift in Sources */,
+				7F8F197B2A6101C7003EA414 /* AlbumDetailsView.swift in Sources */,
 				7FE24D8C2A53F113002AFB22 /* demoApp.swift in Sources */,
 				7F8D16F42A55381F0021C994 /* TabNavigationView.swift in Sources */,
 				7F35AF302A601BFE007AB06F /* TopSongsView.swift in Sources */,
