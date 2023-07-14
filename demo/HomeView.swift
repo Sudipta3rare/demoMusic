@@ -103,11 +103,17 @@ struct HeaderBar : View{
             }.foregroundColor(.white)
             TextField("Search Songs",
                       text:$search).padding(.all).font(.custom("Poppins-Regular", size: 12)).frame(height:45).background().cornerRadius(30).padding(.horizontal).padding(.vertical,5)
-            ScrollView(.horizontal, showsIndicators: false) {HStack {
-                Button("Music"){}.padding(.horizontal,20)
-                    .padding(.vertical,5).background(Color(hex: 0xa8222b))
-                    .foregroundColor(.white)
-                    .font(.custom("Poppins-Regular", size: 12)).cornerRadius(16)
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack {
+            NavigationLink(
+                destination: PlayMusicView(),
+                label: {
+                        Text("Music").padding(.horizontal,20)
+                            .padding(.vertical,5).background(Color(hex: 0xa8222b))
+                            .foregroundColor(.white)
+                            .font(.custom("Poppins-Regular", size: 12)).cornerRadius(16)
+                    }
+            )
                 
                 Button("PodCast & Shows"){}
                     .padding(.vertical,5)
