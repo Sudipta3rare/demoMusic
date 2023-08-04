@@ -53,9 +53,14 @@ struct LoginView: View {
                                     .foregroundColor(Color(hex: 0x848484)).padding(.vertical)
                                 Spacer().frame(height: 90)
                                 Button {
-                                    print("Button pressed")
-//                                    lvm.authenticate()
+                    //                                    lvm.authenticate()
+                                    if(lvm.password != "" && lvm.user != ""){
+                                        lvm.validMessage = true
                                         lvm.loginPost()
+                                        }
+                                    else {
+                                        lvm.validMessage = false
+                                    }
                                 } label: {
                                     Text("Login").font(.custom("Poppins-Regular", size: 18))
                                         .padding(.horizontal, 100)

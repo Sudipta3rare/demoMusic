@@ -14,10 +14,13 @@ struct SignupView: View {
     @State var mobile = ""
     @State var name = ""
 
+    @State var showSheet : Bool = false
+    @State var invalid : Bool = false
     var body: some View {
+        
   
         if !lvm.isLoginViewActive {
-                ZStack(alignment:.bottom){
+            ZStack(alignment:.bottom){
                 Image("06").frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
                 VStack(alignment: HorizontalAlignment.leading){
                     Text("Register").foregroundColor(.white).fontWeight(.bold)
@@ -28,8 +31,10 @@ struct SignupView: View {
                             .padding(.horizontal)
                             .padding(.vertical , 5)
                             .font(.custom("Poppins-Regular", size: 15))
-                         
+                        
                         TextField("Email", text: self.$email)
+                            .autocapitalization(.none)
+                            .keyboardType(.emailAddress)
                             .padding(.horizontal)
                             .padding(.vertical , 5)
                             .font(.custom("Poppins-Regular", size: 15))
@@ -41,9 +46,27 @@ struct SignupView: View {
                             .font(.custom("Poppins-Regular", size: 15))
                             .padding(.horizontal)
                             .padding(.vertical , 5)
-                        Spacer().frame(height: 70)
+                        HStack{
+                            self.invalid ? Text("*Enter valid details") : Text("")
+                        Spacer()
+                        }.frame(alignment: .leading).foregroundColor(.red).padding(.horizontal)
+                        Spacer().frame(height: 65)
                         Button {
-                            print("Button pressed")
+                            
+                            if(name != "" && pass.count>=6 && lvm.isValidPhoneNumber(mobile) && lvm.isValidEmail(email)){
+                                self.invalid = false
+                                lvm.signUpPost(emailAddress: self.email, fullName: self.name, phoneNumber: self.mobile, pass: self.pass)
+                                print(lvm.userResponse)
+                                showSheet.toggle()
+                            }
+                            
+                           
+                            else {
+                                self.invalid = true
+                            }
+                            
+                            
+                            
                         } label: {
                             Text("Sign Up").font(.custom("Poppins-Regular", size: 18))
                                 .padding(.horizontal, 100)
@@ -57,24 +80,29 @@ struct SignupView: View {
                             .cornerRadius(26)
                         
                         HStack {
-                                Text("Already A Memeber ?").italic()
+                            Text("Already A Memeber ?").italic()
                                 .font(.custom("Poppins-Italic", size: 15))
                                 .foregroundColor(Color(hex: 0x848484))
-                                Button("Sign in") {
-                                    // perform login
-                                    lvm.isLoginViewActive = true
-                                    print(lvm.isLoginViewActive)
-                                }
-                                .font(.custom("Poppins-Bold", size: 15))
-                                .fontWeight(.bold)
-                                .foregroundColor(Color(hex: 0xa8222b))
+                            Button("Sign in") {
+                                // perform login
+                                lvm.isLoginViewActive = true
+                                print(lvm.isLoginViewActive)
                             }
+                            .font(.custom("Poppins-Bold", size: 15))
+                            .fontWeight(.bold)
+                            .foregroundColor(Color(hex: 0xa8222b))
+                        }
                         
                     }
+                    .sheet(isPresented: $showSheet) {
+                        lvm.checkUserCreated(statusCode: lvm.userResponse) ? Text("User Already Present").presentationDetents([.height(40)]).font(.custom("Poppins-Bold", size: 15)) : Text("User Created Successfully.").presentationDetents([.height(40)]).font(.custom("Poppins-Bold", size: 15))
+                    }
+                        
+                    
                     .frame(
                         height: 550)
                     .background()
-                        .cornerRadius(30)
+                    .cornerRadius(30)
                     
                     
                 }
@@ -82,9 +110,7 @@ struct SignupView: View {
                 .padding(.trailing)
                 .padding(.leading)
                 .padding(.bottom , 130).frame(height: 550).textFieldStyle(OvalTextFieldStyle())
-                
-              
-                }
+            }
             } else {
                 LoginView()
                 
