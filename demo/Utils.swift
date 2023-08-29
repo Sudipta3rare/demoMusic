@@ -16,8 +16,8 @@ extension UIColor {
         if (hexString.hasPrefix("#")) {
             scanner.scanLocation = 1
         }
-        var color: UInt32 = 0
-        scanner.scanHexInt32(&color)
+        var color: UInt64 = 0
+        scanner.scanHexInt64(&color)
         let mask = 0x000000FF
         let r = Int(color >> 16) & mask
         let g = Int(color >> 8) & mask
@@ -52,3 +52,6 @@ extension Color {
 var optionButton: some View{
     Image(systemName: "ellipsis").foregroundColor(.white).rotationEffect(.degrees(-90))
 }
+
+//let baseUrl = "http://localhost:8080/"
+let baseUrl = "http://49.249.98.203:8081"

@@ -25,7 +25,9 @@ struct ProfileView: View {
             })
         }
         HStack {
-            Button("Profile"){}.padding(.horizontal,20)
+            Button("Profile"){
+                print(UserDefaults.standard.value(forKey: "USER_KEY") ?? "empty key")
+            }.padding(.horizontal,20)
                 .padding(.vertical,5).background(Color(hex: 0xa8222b))
                 .foregroundColor(.white)
                 .font(.custom("Poppins-Regular", size: 12)).cornerRadius(16)

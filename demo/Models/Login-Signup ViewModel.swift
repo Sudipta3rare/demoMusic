@@ -9,11 +9,16 @@ import Foundation
 
 import SwiftUI
 
- let signInUrl = "http://localhost:8080/auth/signin"
-let signUpUrl = "http://localhost:8080/auth/signup"
+ let signInUrl = "\(baseUrl)/auth/signin"
+let signUpUrl = "\(baseUrl)/auth/signup"
 
     class LoginViewModel: ObservableObject{
         @AppStorage("LoginActive") var isLoginViewActive : Bool = true
+        {
+            willSet{
+                ObjectWillChangePublisher().send()
+            }
+        }
         @Published var validMessage : Bool = true{
             willSet{
                 ObjectWillChangePublisher().send()
@@ -30,7 +35,7 @@ let signUpUrl = "http://localhost:8080/auth/signup"
             }
         }
         
-        @Published var userResponse : Int = 400{
+        @Published var userResponse : Int = 404{
             willSet{
                 ObjectWillChangePublisher().send()
             }
@@ -39,8 +44,6 @@ let signUpUrl = "http://localhost:8080/auth/signup"
         func loginPost(){
             guard let url = URL(string: signInUrl) else {return }
             let body : [String: Any] = ["email": user , "password" : password]
-            print(user)
-            print(password)
             let finalData = try! JSONSerialization.data(withJSONObject: body )
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
@@ -52,7 +55,6 @@ let signUpUrl = "http://localhost:8080/auth/signup"
                         let result = try JSONDecoder().decode(LoginResponse.self, from: data)
                         print(result.accessToken)
                         DispatchQueue.main.async {
-                            // Call UIKit methods here
                             self.authenticate(token : result.accessToken)
                         }
                        
@@ -135,9 +137,13 @@ let signUpUrl = "http://localhost:8080/auth/signup"
           
         }
         func logout(){
-           password = ""
+            password = ""
             validMessage = true
             authenticated = false
+            accessToken=""
+            isLoginViewActive=false
+            userResponse = 404
+            
         }
         func logPressed(){
             print("Button pressed")

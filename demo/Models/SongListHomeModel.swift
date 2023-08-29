@@ -17,6 +17,156 @@ struct SongListModel : Hashable,Codable,Identifiable{
         Image(imgName)
     }
 }
+
+struct SongListModelElement: Hashable,Decodable,Identifiable {
+    let id: Int
+    let name, artistName, imgURL, songFile: String
+  
+    typealias SongListModell = [SongListModelElement]
+}
+
+struct AlbumListModelElement: Hashable,Decodable,Identifiable {
+    let id: Int
+    let name, imgUrl: String
+}
+
+struct ArtistListModelElement: Hashable,Decodable,Identifiable {
+    let id: Int
+    let name, imgURL: String
+}
+
+class SongListViewModel : ObservableObject{
+    @Published var isLoaded = false
+    @Published var songListTop5 : [SongListModelElement] = []
+    @Published var reccSongs: [SongListModelElement] = []
+    @Published var top5albums : [AlbumListModelElement] = []
+    @Published var top5artist : [ArtistListModelElement] = []
+    
+    
+    var userToken : String = UserDefaults.standard.value(forKey: "USER_KEY") as! String
+    
+    
+    func getSongListTop5() {
+        guard let url = URL(string: "\(baseUrl)/api/user/getTopSongs") else { return }
+        var request = URLRequest(url: url)
+        request.allHTTPHeaderFields = [
+            "Content-Type": "application/json",
+            "Authorization":"Bearer \(userToken)"
+        ]
+        
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+            do {
+                if let data = data{
+                    let result = try! JSONDecoder().decode( [SongListModelElement].self, from: data)
+                    
+                    DispatchQueue.main.async { [self] in
+                        self.songListTop5 = result
+                        self.isLoaded = true
+                    }
+                    
+                }
+                else if let error = error {
+                    print("HTTP Request Failed \(error)")
+                }
+            }
+            
+        }.resume()
+        
+    }
+        
+        func getReccomendedSongs() {
+            guard let url = URL(string: "\(baseUrl)/api/user/recommendedSongs") else { return }
+            var request = URLRequest(url: url)
+            request.allHTTPHeaderFields = [
+                "Content-Type": "application/json",
+                "Authorization":"Bearer \(userToken)"
+            ]
+            
+            URLSession.shared.dataTask(with: request) { (data, response, error) in
+                do {
+                    if let data = data{
+                        let result = try! JSONDecoder().decode( [SongListModelElement].self, from: data)
+                        
+                        DispatchQueue.main.async { [self] in
+                            self.reccSongs = result
+                            self.isLoaded = true
+                        }
+                        
+                    }
+                    else if let error = error {
+                        print("HTTP Request Failed \(error)")
+                    }
+                }
+                
+            }.resume()
+            
+        }
+    
+    
+    
+    func getTop5Album() {
+            guard let url = URL(string: "\(baseUrl)/api/user/getTopAlbums") else { return }
+            var request = URLRequest(url: url)
+            request.allHTTPHeaderFields = [
+                "Content-Type": "application/json",
+                "Authorization":"Bearer \(userToken)"
+            ]
+            
+            URLSession.shared.dataTask(with: request) { (data, response, error) in
+                do {
+                    if let data = data{
+                        let result = try! JSONDecoder().decode( [AlbumListModelElement].self, from: data)
+                        
+                        DispatchQueue.main.async { [self] in
+                            self.top5albums = result
+                            self.isLoaded = true
+                        }
+                       
+                    }
+                 
+                    else if let error = error {
+                        print("HTTP Request Failed \(error)")
+                    }
+                  
+                }
+               
+                
+            }.resume()
+            
+        }
+    func getTop5Artist() {
+            guard let url = URL(string: "\(baseUrl)/api/user/getTopArtists") else { return }
+            var request = URLRequest(url: url)
+            request.allHTTPHeaderFields = [
+                "Content-Type": "application/json",
+                "Authorization":"Bearer \(userToken)"
+            ]
+            
+            URLSession.shared.dataTask(with: request) { (data, response, error) in
+                do {
+                    if let data = data{
+                        let result = try! JSONDecoder().decode( [ArtistListModelElement].self, from: data)
+                        
+                        DispatchQueue.main.async { [self] in
+                            self.top5artist = result
+                        }
+                       
+                    }
+                 
+                    else if let error = error {
+                        print("HTTP Request Failed \(error)")
+                    }
+                  
+                }
+               
+                
+            }.resume()
+            
+        }
+    
+}
+
+
 //List for songs in home page
 var songList: [SongListModel] = [
     SongListModel(

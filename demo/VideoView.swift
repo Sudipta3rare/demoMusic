@@ -41,19 +41,19 @@ struct VideoView: View {
     var body: some View {
 //        headingBack
         videoScreen.padding(.bottom)
-        
-        songVideoList(title: "Geo Melody Originals", lists: popularList)
-        songVideoList(title: "Album Experiences", lists: albumList)
-        songVideoList(title: "New Video Palylist", lists: songList)
-        songVideoList(title: "Classic Video Palylist", lists: songList)
-        songVideoList(title: "Hit Video Palylist", lists: songList)
+//
+//        songVideoList(title: "Geo Melody Originals", lists: popularList)
+//        songVideoList(title: "Album Experiences", lists: albumList)
+//        songVideoList(title: "New Video Palylist", lists: songList)
+//        songVideoList(title: "Classic Video Palylist", lists: songList)
+//        songVideoList(title: "Hit Video Palylist", lists: songList)
     }
 }
 
 
 struct songVideoList: View {
     var title : String
-    var lists : [SongListModel]
+    var lists : [SongListModelElement]
     var body: some View{
         VStack {
             titleWithButton(title: title)

@@ -12,16 +12,19 @@ struct TabNavigationView: View {
 
     @StateObject var lvm = LoginViewModel()
     @StateObject var libraryModel = LibraryViewModel()
+    @StateObject var songViewModel = SongListViewModel()
     
     init() {
         UITabBar.appearance().isHidden = false
         UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: UIFont(name: "Poppins-Regular", size: 12)!], for: .normal)
         UITabBar.appearance().barTintColor = .white
         UITabBar.appearance().backgroundColor = UIColor(hexString: "#2e2e2e")
+//        songViewModel.getSongListTop5()
        }
     var body: some View {
         
         if(lvm.authenticated ){
+            
             NavigationView {
                 TabView {
                         Group {
@@ -30,11 +33,20 @@ struct TabNavigationView: View {
                                     Image("bg02").resizable().ignoresSafeArea(.all)
                                     ScrollView{
                                         HeaderBar(lvm: lvm)
-                                        songHList(title: "Song", lists: songList)
-                                        songHList(title: "Latest Album", lists: albumList)
-                                        songHListCircle(title: "Popular Artists", lists: popularList)
-                                        songHListCircle(title: "Favorite  Artists", lists: favList)
-                                        songHList(title: "Recommended Songs", lists: recommendedList)
+                                        songHList(title: "Song", lists: songViewModel.songListTop5 )                                    .onAppear
+                                        {
+                                            songViewModel.getSongListTop5()
+                                            songViewModel.getTop5Album()
+                                            songViewModel.getTop5Artist()
+                                        }
+
+                                        songHAlbumList(title: "Latest Album", lists: songViewModel.top5albums)
+                                        songHListCircle(title: "Popular Artists", lists:songViewModel.top5artist)
+                                        songHListCircle(title: "Favorite  Artists", lists: songViewModel.top5artist)
+                                        songHList(title: "Recommended Songs", lists: songViewModel.reccSongs)
+                                            .onAppear{
+                                                songViewModel.getReccomendedSongs()
+                                            }
                                     }
                                     
                                 }

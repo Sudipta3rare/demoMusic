@@ -11,24 +11,39 @@ import Foundation
 
 struct songHList: View {
     var title : String
-    var lists : [SongListModel]
+    var lists : [SongListModelElement]
     var body: some View{
-        ScrollView(.horizontal,showsIndicators: false ) {
+        ScrollView(.horizontal,showsIndicators: false){
             Text(title).font(.custom("Righteous", size: 18)).foregroundColor(.white).frame(maxWidth: .infinity, alignment: .leading)
-            LazyHStack(spacing: 20){
-                ForEach(lists, id: \.id) {
-                    list in
+            HStack(spacing: 20){
+
+                ForEach(lists) { list in
                     SongListTile(song: list)
                 }
             }
-            
+        }.padding(.leading) .padding(.vertical,10)
+    }
+}
+struct songHAlbumList: View {
+    var title : String
+    var lists : [AlbumListModelElement]
+    var body: some View{
+        ScrollView(.horizontal,showsIndicators: false){
+            Text(title).font(.custom("Righteous", size: 18)).foregroundColor(.white).frame(maxWidth: .infinity, alignment: .leading)
+            HStack(spacing: 20){
+
+                ForEach(lists) { list in
+                    SongListAlbumTile(song: list)
+                }
+            }
         }.padding(.leading) .padding(.vertical,10)
     }
 }
 
+
 struct songHListCircle: View {
     var title : String
-    var lists : [SongListModel]
+    var lists : [ArtistListModelElement]
     var body: some View{
         ScrollView(.horizontal,showsIndicators: false ) {
             Text(title).font(.custom("Righteous", size: 18)).foregroundColor(.white).frame(maxWidth: .infinity, alignment: .leading)
@@ -38,26 +53,38 @@ struct songHListCircle: View {
                     SongListTileCircle(song: list)
                 }
             }
-            
+
         }.padding(.leading) .padding(.vertical,10)
     }
 }
 
 
     struct SongListTileCircle: View{
-       @State var song: SongListModel
+       @State var song: ArtistListModelElement
         var body: some View{
            
               
                     VStack{
-                      
-                        Image(song.imgName)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 130, height: 130)
-                            .clipShape(Circle()).overlay{
-                                Circle().stroke(Color(hex: 0x1a1a1a), lineWidth: 8)
+                        AsyncImage(
+                            url: URL(string: baseUrl+"\(song.imgURL)"),
+                            content: { image in
+                                image.resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(maxWidth: 200, maxHeight: 100).clipShape(Circle()).overlay{
+                                        Circle().stroke(Color(hex: 0x1a1a1a), lineWidth: 8)
+                                    }
+                            },
+                            placeholder: {
+                               
                             }
+                        )
+//                        Image(song.imgURL)
+//                            .resizable()
+//                            .aspectRatio(contentMode: .fit)
+//                            .frame(width: 130, height: 130)
+//                            .clipShape(Circle()).overlay{
+//                                Circle().stroke(Color(hex: 0x1a1a1a), lineWidth: 8)
+//                            }
                         
                         Text(song.name ).font(.custom("Poppins-Regular", size: 12)).foregroundColor(.white).frame(maxWidth: .infinity, alignment: .center)
                     }
@@ -69,19 +96,52 @@ struct songHListCircle: View {
 
 
 struct SongListTile: View{
-    var song: SongListModel
+    var song: SongListModelElement
     var body: some View{
         VStack(alignment: .center){
-            Image(song.imgName).resizable()
-                .aspectRatio(contentMode: .fill).frame(width:130,height: 130).cornerRadius(10)
+            AsyncImage(
+                url: URL(string: baseUrl+"\(song.imgURL)"),
+                content: { image in
+                    image.resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxWidth: 200, maxHeight: 100).cornerRadius(10)
+                },
+                placeholder: {
+                   
+                }
+            )
+           
             
-            Text(song.name ).font(.custom("Poppins-Regular", size: 12)).foregroundColor(.white).frame(maxWidth: .infinity, alignment: .leading)
+            Text(song.name).font(.custom("Poppins-Regular", size: 12)).foregroundColor(.white).frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+}
+struct SongListAlbumTile: View{
+    var song: AlbumListModelElement
+    var body: some View{
+        VStack(alignment: .center){
+            AsyncImage(
+                url: URL(string: baseUrl+"\(song.imgUrl)"),
+                content: { image in
+                    image.resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxWidth: 200, maxHeight: 100).cornerRadius(10)
+                },
+                placeholder: {
+                   Text("Loading")
+                }
+            )
+           
+            
+            Text(song.name).font(.custom("Poppins-Regular", size: 12)).foregroundColor(.white).frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 }
 
+
 struct HeaderBar : View{
     @StateObject var lvm: LoginViewModel
+    @StateObject var songListModel = SongListViewModel()
     @State var search :String =  ""
     var body: some View{
         VStack(alignment: .leading) {
@@ -96,7 +156,11 @@ struct HeaderBar : View{
                 } label:{
                     Image(systemName: "bell.fill").padding(.horizontal,5)
                 }
-                Image(systemName: "timer").padding(.horizontal,5)
+                Button{
+                    songListModel.getSongListTop5()
+                }label:{
+                    Image(systemName: "timer").padding(.horizontal,5)
+                }
                 Image(systemName: "gearshape.fill").padding(.leading,5.0)
                     .padding(.trailing)
                 

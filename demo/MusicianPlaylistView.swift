@@ -108,11 +108,11 @@ struct MusicianPlaylistView: View {
                             
                             Section(header: Text("Artist Songs").font(.custom("Poppins-Regular", size: 18))){
                                 ScrollView(.horizontal,showsIndicators: false) {
-                                    LazyHStack(spacing: 20){
-                                        ForEach(albumList, id: \.id){
-                                            lis in SongListTile(song: lis)
-                                        }
-                                    }
+//                                    LazyHStack(spacing: 20){
+//                                        ForEach(albumList, id: \.id){
+//                                            lis in SongListTile(song: lis)
+//                                        }
+//                                    }
                                 }.padding(.bottom)
                             }
                             
@@ -130,9 +130,9 @@ struct MusicianPlaylistView: View {
                             Section(header: Text("Fans Also Like").font(.custom("Poppins-Regular", size: 18))){
                                 ScrollView(.horizontal, showsIndicators: false) {
                                     HStack(spacing:20) {
-                                        ForEach(songList, id: \.id){
-                                            list in SongListTileCircle(song: list)
-                                        }
+//                                        ForEach(songList, id: \.id){
+//                                            list in SongListTileCircle(song: list)
+//                                        }
                                     }
                                 }
                             }.padding(.bottom)
