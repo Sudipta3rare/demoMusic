@@ -14,8 +14,7 @@ struct libraryListModel : Hashable,Codable,Identifiable{
     var imgName: String
     var isPlaying : Bool
     var isFav: Bool
-    
-   
+
 }
 
 class LibraryViewModel: ObservableObject{

@@ -15,10 +15,30 @@ struct songHList: View {
     var body: some View{
         ScrollView(.horizontal,showsIndicators: false){
             Text(title).font(.custom("Righteous", size: 18)).foregroundColor(.white).frame(maxWidth: .infinity, alignment: .leading)
-            HStack(spacing: 20){
+            LazyHStack(spacing: 20){
 
                 ForEach(lists) { list in
-                    SongListTile(song: list)
+                    NavigationLink(destination:PlayMusicView(songList: lists, songIndex: 0)){
+                    
+                    
+                            VStack(alignment: .center){
+                                AsyncImage(
+                                    url: URL(string: baseUrl+"\(list.imgURL)"),
+                                    content: { image in
+                                        image.resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(maxWidth: 200, maxHeight: 100).cornerRadius(10)
+                                    },
+                                    placeholder: {
+                                        Text("Loading").foregroundColor(.white)
+                                    }
+                                )
+                               
+                                
+                                Text(list.name).font(.custom("Poppins-Regular", size: 12)).foregroundColor(.white).frame(maxWidth: .infinity, alignment: .leading)
+                            }
+                        
+                    }
                 }
             }
         }.padding(.leading) .padding(.vertical,10)
@@ -95,27 +115,7 @@ struct songHListCircle: View {
 
 
 
-struct SongListTile: View{
-    var song: SongListModelElement
-    var body: some View{
-        VStack(alignment: .center){
-            AsyncImage(
-                url: URL(string: baseUrl+"\(song.imgURL)"),
-                content: { image in
-                    image.resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(maxWidth: 200, maxHeight: 100).cornerRadius(10)
-                },
-                placeholder: {
-                   
-                }
-            )
-           
-            
-            Text(song.name).font(.custom("Poppins-Regular", size: 12)).foregroundColor(.white).frame(maxWidth: .infinity, alignment: .leading)
-        }
-    }
-}
+
 struct SongListAlbumTile: View{
     var song: AlbumListModelElement
     var body: some View{
@@ -169,15 +169,15 @@ struct HeaderBar : View{
                       text:$search).padding(.all).font(.custom("Poppins-Regular", size: 12)).frame(height:45).background().cornerRadius(30).padding(.horizontal).padding(.vertical,5)
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-            NavigationLink(
-                destination: PlayMusicView(),
-                label: {
+//            NavigationLink(
+//                destination: PlayMusicView(),
+//                label: {
                         Text("Music").padding(.horizontal,20)
                             .padding(.vertical,5).background(Color(hex: 0xa8222b))
                             .foregroundColor(.white)
                             .font(.custom("Poppins-Regular", size: 12)).cornerRadius(16)
-                    }
-            )
+//                    }
+//            )
                 
                 Button("PodCast & Shows"){}
                     .padding(.vertical,5)

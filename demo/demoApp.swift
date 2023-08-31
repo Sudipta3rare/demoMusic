@@ -9,9 +9,10 @@ import SwiftUI
 
 @main
 struct demoApp: App {
+    @StateObject var audioManager  = AudioManager()
     var body: some Scene {
         WindowGroup {
-            SplashView()
+            SplashView().environmentObject(audioManager)
         }
     }
 }

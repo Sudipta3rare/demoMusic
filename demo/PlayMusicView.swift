@@ -5,9 +5,19 @@
 //  Created by 32 Technologies on 14/07/23.
 //
 
+import AVFoundation
+
 import SwiftUI
 
 struct PlayMusicView: View {
+    var songList : [SongListModelElement]
+    var songIndex : Int
+    @State var song1 = false
+    @State var speed = 0.0
+    @State var totalDuration = 0.0
+    @State var isEditing : Bool = false
+    let timer = Timer.publish(every: 0.5, on: .main, in: .common).autoconnect()
+    @EnvironmentObject var audioManager : AudioManager
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     var headingBack: some View{
        
@@ -35,25 +45,45 @@ struct PlayMusicView: View {
                 Image("m03").resizable().aspectRatio(contentMode: .fill).frame(width: UIScreen.main.bounds.size.width/1.1, height: 250 ).cornerRadius(30).padding(.bottom)
                 HStack {
                     VStack(alignment: .leading){
-                        Text("Song Title").font(.custom("Righteous", size: 20))
-                        Text("Lorem ipsum dolor sit amet eirmod.").font(.custom("Poppins-Regular", size: 12))
+                        Text("\(songList[songIndex].name)").font(.custom("Righteous", size: 20))
+                        Text("\(songList[songIndex].artistName)").font(.custom("Poppins-Regular", size: 12))
                     }
                 Spacer()
                     
                     Image(systemName: "heart.fill")
                 }.padding(.horizontal)
-                ProgressView(value: 0.4)
-                HStack{
-                    Text("1:01")
-                    Spacer()
-                    Text("3:03")
-                }.font(.custom("Poppins-Regular", size: 12))
-                
+//                ProgressView(value: 0.4)
+                if let player = audioManager.player?.currentItem?.asset
+                {
+                    Slider(value: $speed, in: 0...420.0){
+                        editing in if !editing{
+                            audioManager.updatePlayerCurrentTime(sliderValue: speed)                    }
+                    }.accentColor(.white)
+                    
+                    HStack{
+                        Text(audioManager.convertDoubleToMinutes(seconds: speed))
+                        Spacer()
+//                        Text(audioManager.convertDurationToMinutes(duration: player.duration))
+                    }.font(.custom("Poppins-Regular", size: 12))
+                }
                 HStack{
                     Image(systemName: "shuffle").font(.system(size: 25))
                     Spacer()
                     Image(systemName: "chevron.backward.to.line")
-                    Image(systemName: "play.circle.fill").font(.system(size: 70))
+                    Image(systemName: song1 ? "pause.circle.fill": "play.circle.fill")
+                                .font(.system(size: 70))
+                                .padding(.trailing)
+                                .onTapGesture {
+                                    
+                                    song1.toggle()
+                                    
+                                    if song1{
+                                        audioManager.player?.play()
+                                
+                                    } else {
+                                        audioManager.player?.pause()
+                                    }
+                                }
                     Image(systemName: "chevron.right.to.line")
                    
                     
@@ -77,6 +107,15 @@ struct PlayMusicView: View {
                 .font(.custom("Poppins-Regular", size: 20)).padding(40).background(Color(hex: 0xa8222b)).cornerRadius(30).padding(.vertical,30)
                 
                 ZStack(alignment: .leading){
+                    AsyncImage(
+                        url: URL(string: baseUrl+"\(songList[songIndex].imgURL)"),
+                        content: { image in
+                            image.resizable().frame(width: UIScreen.main.bounds.size.width/1.1, height: 200).cornerRadius(20)
+                        },
+                        placeholder: {
+                            Text("Loading").foregroundColor(.white)
+                        }
+                    )
                     Image("m05").resizable().frame(width: UIScreen.main.bounds.size.width/1.1, height: 200).cornerRadius(20)
                     VStack(alignment: .leading){
                         Text("About the artist").bold()
@@ -100,12 +139,52 @@ struct PlayMusicView: View {
             }.foregroundColor(.white).padding(.horizontal)
             
             
-        }.navigationBarBackButtonHidden()
+        }
+        .onAppear{
+           let songUrl  = songList[songIndex].songFile
+            guard let url = URL(string: "\(baseUrl)\(songUrl)") else { return }
+//            guard let url = URL(string:  "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3") else { return }
+//
+            
+            audioManager.playerItem = AVPlayerItem(url: url)
+            audioManager.player = AVPlayer(playerItem: audioManager.playerItem)
+            print(audioManager.player?.currentItem?.seekableTimeRanges.last?.timeRangeValue.end.seconds )
+            let asset = AVURLAsset(url: url, options: nil)
+            let audioDuration = asset.duration
+            print(CMTimeGetSeconds(audioDuration))
+            if audioManager.player?.status == .readyToPlay {
+
+                print(audioManager.player?.currentItem?.asset.duration.seconds) // it't not nan
+
+            }
+            else{
+                print("not ready to play")
+            }
+            if let player = audioManager.player?.currentItem?.asset {
+//                totalDuration = CMTimeConverter.convertCMTimeToDouble(cmTime: player.duration)
+                print("here")
+//                print(audioManager.player?.currentItem?.asset.duration)
+                song1 = true
+                audioManager.player?.play()
+               
+            }}
+        .navigationBarBackButtonHidden()
+            .onReceive(timer){
+            _ in
+            guard let player = audioManager.player, !isEditing else {return}
+            speed = CMTimeConverter.convertCMTimeToDouble(cmTime: player.currentTime())
+        }
     }
 }
+struct CMTimeConverter {
+  static func convertCMTimeToDouble(cmTime: CMTime) -> Double {
+    return Double(cmTime.value) / Double(cmTime.timescale)
+  }
+}
+
 
 struct PlayMusicView_Previews: PreviewProvider {
     static var previews: some View {
-        PlayMusicView()
+        PlayMusicView(songList: [], songIndex: 2).environmentObject(AudioManager())
     }
 }

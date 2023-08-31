@@ -62,7 +62,24 @@ struct songVideoList: View {
                 LazyHStack(spacing: 20){
                     ForEach(lists, id: \.id) {
                         list in
-                        SongListTile(song: list)
+                        
+                                VStack(alignment: .center){
+                                    AsyncImage(
+                                        url: URL(string: baseUrl+"\(list.imgURL)"),
+                                        content: { image in
+                                            image.resizable()
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(maxWidth: 200, maxHeight: 100).cornerRadius(10)
+                                        },
+                                        placeholder: {
+                                           
+                                        }
+                                    )
+                                   
+                                    
+                                    Text(list.name).font(.custom("Poppins-Regular", size: 12)).foregroundColor(.white).frame(maxWidth: .infinity, alignment: .leading)
+                                }
+
                     }
                 }
                 
