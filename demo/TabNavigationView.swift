@@ -33,20 +33,24 @@ struct TabNavigationView: View {
                                     Image("bg02").resizable().ignoresSafeArea(.all)
                                     ScrollView{
                                         HeaderBar(lvm: lvm)
-                                        songHList(title: "Song", lists: songViewModel.songListTop5 )                                    .onAppear
-                                        {
-                                            songViewModel.getSongListTop5()
-                                            songViewModel.getTop5Album()
-                                            songViewModel.getTop5Artist()
-                                        }
-
-                                        songHAlbumList(title: "Latest Album", lists: songViewModel.top5albums)
-                                        songHListCircle(title: "Popular Artists", lists:songViewModel.top5artist)
-                                        songHListCircle(title: "Favorite  Artists", lists: songViewModel.top5artist)
-                                        songHList(title: "Recommended Songs", lists: songViewModel.reccSongs)
-                                            .onAppear{
-                                                songViewModel.getReccomendedSongs()
-                                            }
+                                        
+                                        
+                                                                                songHList(title: "Song", lists: songViewModel.songListTop5 )                                    .onAppear
+                                                                                {
+                                                                                    songViewModel.getSongListTop5()
+                                                                                    songViewModel.getTop5Album()
+                                                                                    songViewModel.getTop5Artist()
+                                                                                }
+                                        
+                                                                                songHAlbumList(title: "Latest Album", lists: songViewModel.top5albums)
+                                                                                songHListCircle(title: "Popular Artists", lists:songViewModel.top5artist)
+                                                                                songHListCircle(title: "Favorite  Artists", lists: songViewModel.top5artist)
+                                                                                songHList(title: "Recommended Songs", lists: songViewModel.reccSongs)
+                                                                                    .onAppear{
+                                                                                        songViewModel.getReccomendedSongs()
+                                                                                    }
+                                        
+                                        
                                     }
                                     
                                 }
@@ -80,7 +84,7 @@ struct TabNavigationView: View {
                                     ScrollView{
                                         LibraryView(lvm: libraryModel)
                                     }
-                                    currentPlayingBottom(lvm: libraryModel)
+//                                    currentPlayingBottom(lvm: libraryModel)
                                 }
                             }
                                 .tabItem {

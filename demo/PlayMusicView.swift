@@ -10,8 +10,8 @@ import AVFoundation
 import SwiftUI
 
 struct PlayMusicView: View {
-    var songList : [SongListModelElement]
-    var songIndex : Int
+    @State var songList : [SongListModelElement]
+    @State  var songIndex : Int
     @State var song1 = false
     @State var speed = 0.0
     @State var totalDuration = 0.0
@@ -23,6 +23,7 @@ struct PlayMusicView: View {
        
             HStack {
                 Button{
+                    audioManager.player?.pause()
                     self.presentationMode.wrappedValue.dismiss()
                 } label: {
                     Image(systemName: "arrow.left.circle.fill").font(.system(size: 35)).foregroundStyle(.white, Color(hex: 0xbd3c40)).transition(.offset(x:0, y:850))
@@ -42,7 +43,17 @@ struct PlayMusicView: View {
             Image("bg12").resizable().ignoresSafeArea(.all)
             ScrollView(.vertical, showsIndicators: false){
                headingBack
-                Image("m03").resizable().aspectRatio(contentMode: .fill).frame(width: UIScreen.main.bounds.size.width/1.1, height: 250 ).cornerRadius(30).padding(.bottom)
+                AsyncImage(
+                    url: URL(string: baseUrl+"\(songList[songIndex].imgURL)"),
+                    content: { image in
+                        image.resizable().aspectRatio(contentMode: .fill).frame(width: UIScreen.main.bounds.size.width/1.1, height: 250 ).cornerRadius(30).padding(.bottom)
+                    },
+                    placeholder: {
+                        Text("Loading").foregroundColor(.white)
+                    }
+                )
+
+//                Image("m03").resizable().aspectRatio(contentMode: .fill).frame(width: UIScreen.main.bounds.size.width/1.1, height: 250 ).cornerRadius(30).padding(.bottom)
                 HStack {
                     VStack(alignment: .leading){
                         Text("\(songList[songIndex].name)").font(.custom("Righteous", size: 20))
@@ -69,7 +80,19 @@ struct PlayMusicView: View {
                 HStack{
                     Image(systemName: "shuffle").font(.system(size: 25))
                     Spacer()
-                    Image(systemName: "chevron.backward.to.line")
+                    Image(systemName: "chevron.backward.to.line").onTapGesture {
+                        
+                        if(0 < songIndex){
+                            songIndex = songIndex-1
+                        }
+                        else{
+                            songIndex = 0
+                        }
+                       
+                        let songUrl  = songList[songIndex].songFile
+                        audioManager.playSound(sound: "\(baseUrl)\(songUrl)")
+                        audioManager.player?.play()
+                    }
                     Image(systemName: song1 ? "pause.circle.fill": "play.circle.fill")
                                 .font(.system(size: 70))
                                 .padding(.trailing)
@@ -84,13 +107,22 @@ struct PlayMusicView: View {
                                         audioManager.player?.pause()
                                     }
                                 }
-                    Image(systemName: "chevron.right.to.line")
-                   
-                    
+                    Image(systemName: "chevron.right.to.line").onTapGesture {
+                        
+                        if(songList.count-1 > songIndex){
+                            songIndex = songIndex+1
+                        }
+                        else{
+                            songIndex = 0
+                        }
+         
+                        let songUrl  = songList[songIndex].songFile
+                        audioManager.playSound(sound: "\(baseUrl)\(songUrl)")
+                        audioManager.player?.play()
+                    }
                     Spacer()
                     Image("screeningIcon")
                 }
-                
                 HStack{
                     Image(systemName: "airplayaudio")
                     Spacer()
@@ -98,24 +130,15 @@ struct PlayMusicView: View {
                     Image("shareIcon").padding(.horizontal)
                     Image(systemName: "text.justify.left")
                     
-                }
+                }.padding(.vertical,30)
                 
-                VStack (alignment: .leading){
-                    Text("Lorem ipsum dolor, \nsed diam nonumy eirmod tempor nvidunt").padding(.bottom,-40).bold()
-                    Text(  "\nLabore et dolore magna aliquyam erat  \nSed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus ").foregroundColor(Color(hex: 0x0000))
-                }
-                .font(.custom("Poppins-Regular", size: 20)).padding(40).background(Color(hex: 0xa8222b)).cornerRadius(30).padding(.vertical,30)
-                
+//                VStack (alignment: .leading){
+//                    Text("Lorem ipsum dolor, \nsed diam nonumy eirmod tempor nvidunt").padding(.bottom,-40).bold()
+//                    Text(  "\nLabore et dolore magna aliquyam erat  \nSed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus ").foregroundColor(Color(hex: 0x0000))
+//                }
+//                .font(.custom("Poppins-Regular", size: 20)).padding(40).background(Color(hex: 0xa8222b)).cornerRadius(30).padding(.vertical,30)
+//
                 ZStack(alignment: .leading){
-                    AsyncImage(
-                        url: URL(string: baseUrl+"\(songList[songIndex].imgURL)"),
-                        content: { image in
-                            image.resizable().frame(width: UIScreen.main.bounds.size.width/1.1, height: 200).cornerRadius(20)
-                        },
-                        placeholder: {
-                            Text("Loading").foregroundColor(.white)
-                        }
-                    )
                     Image("m05").resizable().frame(width: UIScreen.main.bounds.size.width/1.1, height: 200).cornerRadius(20)
                     VStack(alignment: .leading){
                         Text("About the artist").bold()
@@ -142,16 +165,17 @@ struct PlayMusicView: View {
         }
         .onAppear{
            let songUrl  = songList[songIndex].songFile
-            guard let url = URL(string: "\(baseUrl)\(songUrl)") else { return }
+//            guard let url = URL(string: "\(baseUrl)\(songUrl)") else { return }
+//            print(url)
 //            guard let url = URL(string:  "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3") else { return }
 //
+            audioManager.playSound(sound: "\(baseUrl)\(songUrl)")
+
+            print(audioManager.player)
+            print(audioManager.player?.currentItem?.loadedTimeRanges)
+            print(audioManager.player?.currentItem?.asset)
+            print(audioManager.player?.currentItem?.asset.duration)
             
-            audioManager.playerItem = AVPlayerItem(url: url)
-            audioManager.player = AVPlayer(playerItem: audioManager.playerItem)
-            print(audioManager.player?.currentItem?.seekableTimeRanges.last?.timeRangeValue.end.seconds )
-            let asset = AVURLAsset(url: url, options: nil)
-            let audioDuration = asset.duration
-            print(CMTimeGetSeconds(audioDuration))
             if audioManager.player?.status == .readyToPlay {
 
                 print(audioManager.player?.currentItem?.asset.duration.seconds) // it't not nan

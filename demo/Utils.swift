@@ -53,5 +53,6 @@ var optionButton: some View{
     Image(systemName: "ellipsis").foregroundColor(.white).rotationEffect(.degrees(-90))
 }
 
-//let baseUrl = "http://localhost:8080/"
-let baseUrl = "http://49.249.98.203:8081"
+let baseUrl = "http://localhost:8080"
+//let baseUrl = "http://49.249.98.203:8081" // LIVE SERVER
+//let baseUrl = "http://192.168.2.187:8080" // Kalpadiptya's IP

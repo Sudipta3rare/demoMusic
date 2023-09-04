@@ -13,6 +13,7 @@ final class AudioManager : ObservableObject{
     var player : AVPlayer?
     var playerItem : AVPlayerItem?
     var playerAudio : AVAudioPlayer?
+    var totalDuration : Double?
     @Published var speed = 0.0{            willSet{
         ObjectWillChangePublisher().send()
     }
@@ -27,6 +28,9 @@ final class AudioManager : ObservableObject{
                 self.player = AVPlayer(url: url)
                 self.playerItem = AVPlayerItem(url: url)
                 print(player?.currentItem?.duration)
+                let asset = AVURLAsset(url: url, options: nil)
+                let audioDuration = asset.duration
+                print(CMTimeGetSeconds(audioDuration))
             }
         else{
             print("Problem in url \(sound)")
@@ -60,6 +64,8 @@ final class AudioManager : ObservableObject{
     
     func updatePlayerCurrentTime(sliderValue : Double) {
         player?.seek(to: CMTime(seconds: sliderValue, preferredTimescale: 1))
+        
+        print(playerItem?.duration)
       }
     
     func convertDurationToMinutes(duration: CMTime) -> String {

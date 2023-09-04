@@ -17,8 +17,8 @@ struct songHList: View {
             Text(title).font(.custom("Righteous", size: 18)).foregroundColor(.white).frame(maxWidth: .infinity, alignment: .leading)
             LazyHStack(spacing: 20){
 
-                ForEach(lists) { list in
-                    NavigationLink(destination:PlayMusicView(songList: lists, songIndex: 0)){
+                ForEach(Array(lists.enumerated()), id: \.element) { index, list in
+                    NavigationLink(destination:PlayMusicView(songList: lists, songIndex: index)){
                     
                     
                             VStack(alignment: .center){

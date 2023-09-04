@@ -18,19 +18,19 @@ struct SongListModel : Hashable,Codable,Identifiable{
     }
 }
 
-struct SongListModelElement: Hashable,Decodable,Identifiable {
+struct SongListModelElement: Hashable,Sendable,Codable,Identifiable {
     let id: Int
     let name, artistName, imgURL, songFile: String
   
     typealias SongListModell = [SongListModelElement]
 }
 
-struct AlbumListModelElement: Hashable,Decodable,Identifiable {
+struct AlbumListModelElement: Hashable,Codable,Identifiable {
     let id: Int
     let name, imgUrl: String
 }
 
-struct ArtistListModelElement: Hashable,Decodable,Identifiable {
+struct ArtistListModelElement: Hashable,Sendable,Codable,Identifiable {
     let id: Int
     let name, imgURL: String
 }

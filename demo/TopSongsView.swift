@@ -90,9 +90,13 @@ struct TopSongsView: View {
                 }.padding(.horizontal).padding(.bottom,100)
                 
             }.padding(.horizontal).foregroundColor(.white)
-            currentPlayingBottom(lvm: lvm)
+            
+//            currentPlayingBottom(lvm: lvm)
         }.navigationBarBackButtonHidden(true)
-        
+//            .onAppear{
+//            lvm.getTopAlbumProfile(id: 2)
+//        }
+//
     }
 }
 

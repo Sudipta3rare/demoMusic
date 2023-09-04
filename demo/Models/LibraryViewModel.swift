@@ -17,8 +17,51 @@ struct libraryListModel : Hashable,Codable,Identifiable{
 
 }
 
-class LibraryViewModel: ObservableObject{
+struct libraryListModelElement : Hashable,Sendable,Codable,Identifiable{
+    var id: Int
+    var albumName : String
+    var artistList : [ArtistListModelElement]
+    var songList : [SongListModelElement]
     
+}
+
+class LibraryViewModel: ObservableObject{
+    var top5list : [libraryListModelElement] = []
+
+    var userToken : String = UserDefaults.standard.value(forKey: "USER_KEY") as! String
+    
+    func getTopAlbumProfile(id: Int) {
+
+        
+        guard let url = URL(string: "\(baseUrl)/api/user/getAlbum/\(id)") else { return }
+
+        var request = URLRequest(url: url)
+        request.allHTTPHeaderFields = [
+            "Content-Type": "application/json",
+            "Authorization":"Bearer \(userToken)"
+        ]
+        
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+            do {
+                if let data = data{
+                                        let result = try! JSONDecoder().decode( [libraryListModelElement].self, from: data)
+                    
+                    DispatchQueue.main.async {
+                        [self] in
+                        self.top5list = result
+                        print(top5list)
+                    }
+                   
+                }
+                else if let error = error {
+                    print("HTTP Request Failed \(error)")
+                }
+            }
+            
+        }.resume()
+        
+    }
+
     var libraryList: [libraryListModel] = [
         libraryListModel(
             id: 1, name:  "My Escape", description: "Lore ipsum",imgName:"m01",isPlaying:  false, isFav:false),

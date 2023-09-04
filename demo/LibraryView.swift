@@ -142,51 +142,51 @@ struct LibraryView: View {
     }
 }
 
-struct currentPlayingBottom : View{
-    @StateObject var lvm : LibraryViewModel
-    var body: some View{
-        if(lvm.currentPlaying.id != 0){
-            HStack{
-                circularImageSml(imgName: lvm.currentPlaying.imgName).padding(.horizontal)
-                    .padding(.vertical,10)
-                VStack(alignment: .leading){
-                    Text(lvm.currentPlaying.name).font(.custom("Poppins-Regular", size: 17))
-                    Text(lvm.currentPlaying.description).font(.custom("Poppins-Regular", size: 12)).opacity(0.6)
-                }.padding(.horizontal).foregroundColor(.white)
-                Spacer()
-                Button{
-                    lvm.currentPlaying.isFav.toggle()
-                }label: {
-                    if(lvm.currentPlaying.isFav){
-                        Image(systemName: "heart.fill")
-                    }
-                    else
-                    {
-                        Image(systemName: "heart")
-                        
-                    }
-                }.font(.system(size: 20))
-                Button{
-                    lvm.currentPlaying.isPlaying.toggle()
-                }label: {
-                    if(lvm.currentPlaying.isPlaying){
-                        Image(systemName: "pause.fill")
-                    }
-                    else
-                    {
-                        Image(systemName: "play.fill")
-                        
-                        
-                    }
-                }.font(.system(size: 20))
-                
-                .padding()
-            }.background(Color(hex: 0xa8222b))
-                
-                .frame(maxHeight: .infinity, alignment: .bottom)
-        }
-    }
-}
+//struct currentPlayingBottom : View{
+//    @StateObject var lvm : LibraryViewModel
+//    var body: some View{
+//        if(lvm.currentPlaying.id != 0){
+//            HStack{
+//                circularImageSml(imgName: lvm.currentPlaying.imgName).padding(.horizontal)
+//                    .padding(.vertical,10)
+//                VStack(alignment: .leading){
+//                    Text(lvm.currentPlaying.name).font(.custom("Poppins-Regular", size: 17))
+//                    Text(lvm.currentPlaying.description).font(.custom("Poppins-Regular", size: 12)).opacity(0.6)
+//                }.padding(.horizontal).foregroundColor(.white)
+//                Spacer()
+//                Button{
+//                    lvm.currentPlaying.isFav.toggle()
+//                }label: {
+//                    if(lvm.currentPlaying.isFav){
+//                        Image(systemName: "heart.fill")
+//                    }
+//                    else
+//                    {
+//                        Image(systemName: "heart")
+//                        
+//                    }
+//                }.font(.system(size: 20))
+//                Button{
+//                    lvm.currentPlaying.isPlaying.toggle()
+//                }label: {
+//                    if(lvm.currentPlaying.isPlaying){
+//                        Image(systemName: "pause.fill")
+//                    }
+//                    else
+//                    {
+//                        Image(systemName: "play.fill")
+//                        
+//                        
+//                    }
+//                }.font(.system(size: 20))
+//                
+//                .padding()
+//            }.background(Color(hex: 0xa8222b))
+//                
+//                .frame(maxHeight: .infinity, alignment: .bottom)
+//        }
+//    }
+//}
 
 struct LibraryView_Previews: PreviewProvider {
     static var previews: some View {
