@@ -11,6 +11,7 @@ struct TopSongsView: View {
   
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @StateObject var lvm = LibraryViewModel()
+    @State var albumId : Int?
     var headingBack: some View{
        
             HStack {
@@ -37,9 +38,10 @@ struct TopSongsView: View {
             ScrollView{
                 headingBack.padding(.bottom)
                 Image("top10").resizable().aspectRatio(contentMode: .fill).frame(width: 100, height: 100).padding(.bottom)
-                Text("Geo Melody Top 10").font(.custom("Righteous", size: 17))
-                Text("10 Tracks (6HT 37Min)").font(.custom("Poppins-Italic", size: 12))
-                
+                Text(lvm.top5list?.albumName ?? "Song Album").font(.custom("Righteous", size: 17))
+                if let noOfTracks = lvm.top5list?.songList.count{
+                    Text("\(noOfTracks) Tracks").font(.custom("Poppins-Italic", size: 12))
+                }
                 
                 HStack{
                     Spacer()
@@ -69,39 +71,43 @@ struct TopSongsView: View {
                     Spacer()
                 }.padding(.bottom)
                 VStack(alignment: .leading, spacing: 24) {
-                    ForEach(lvm.top10List, id: \.id){
-                        l  in Button{
-                            lvm.currentPlaying = l
-                            lvm.currentPlaying.isPlaying = true
-                                
-                        }label: {
+                        if let songList = lvm.top5list?.songList{
+                            ForEach(Array(songList.enumerated()), id: \.element){
+                        index,l  in NavigationLink(
+//                            lvm.currentPlaying = l
+//                            lvm.currentPlaying.isPlaying = true
+                            destination: PlayMusicView(songList: songList, songIndex: index)
+                            
+                        ){
                             HStack{
-                                circularImageSml(imgName: l.imgName)
+                                circularImageSmlAsync(imgName: "\(baseUrl)\(l.imgURL)")
+//                                circularImageSml(imgName: l.imgName)
                                 VStack(alignment: .leading){
                                     Text(l.name).font(.custom("Poppins-Regular", size: 17))
-                                    Text(l.description).font(.custom("Poppins-Regular", size: 12)).opacity(0.6)
+                                    Text(l.artistName).font(.custom("Poppins-Regular", size: 12)).opacity(0.6)
                                 }.padding(.horizontal)
-                           Spacer()
+                                Spacer()
                                 optionButton
                             }
                         }
                         
-                    }.foregroundColor(.white)
+                    }.foregroundColor(.white)}
                 }.padding(.horizontal).padding(.bottom,100)
                 
             }.padding(.horizontal).foregroundColor(.white)
             
 //            currentPlayingBottom(lvm: lvm)
         }.navigationBarBackButtonHidden(true)
-//            .onAppear{
-//            lvm.getTopAlbumProfile(id: 2)
-//        }
-//
+            .onAppear{
+                print("on appear")
+            lvm.getTopAlbumProfile(id: albumId ?? 2)
+        }
+
     }
 }
 
 struct TopSongsView_Previews: PreviewProvider {
     static var previews: some View {
-        TopSongsView()
+        TopSongsView(albumId: 2)
     }
 }

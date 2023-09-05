@@ -102,6 +102,7 @@ struct PlayMusicView: View {
                                     
                                     if song1{
                                         audioManager.player?.play()
+                                        
                                 
                                     } else {
                                         audioManager.player?.pause()
@@ -170,7 +171,7 @@ struct PlayMusicView: View {
 //            guard let url = URL(string:  "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3") else { return }
 //
             audioManager.playSound(sound: "\(baseUrl)\(songUrl)")
-
+            
             print(audioManager.player)
             print(audioManager.player?.currentItem?.loadedTimeRanges)
             print(audioManager.player?.currentItem?.asset)

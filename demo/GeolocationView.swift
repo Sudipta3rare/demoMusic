@@ -161,6 +161,32 @@ struct circularImageSml : View{
             }
     }
 }
+struct circularImageSmlAsync : View{
+    var imgName : String
+    var body: some View{
+        
+        AsyncImage(
+            url: URL(string: imgName),
+            content: { image in
+                image.resizable().aspectRatio(contentMode: .fit).frame(width: 50, height: 50).clipShape(Circle()).overlay{
+                    Circle().stroke(.white, lineWidth: 1)
+                }
+            },
+            placeholder: {
+                Text("Loading").foregroundColor(.white)
+            }
+        )
+        
+//
+//        Image(imgName)
+//            .resizable()
+//            .aspectRatio(contentMode: .fit)
+//            .frame(width: 50, height:50)
+//            .clipShape(Circle()).overlay{
+//                Circle().stroke(.white, lineWidth: 1)
+//            }
+    }
+}
 struct GeolocationView_Previews: PreviewProvider {
     static var previews: some View {
         GeolocationView()

@@ -18,47 +18,40 @@ struct libraryListModel : Hashable,Codable,Identifiable{
 }
 
 struct libraryListModelElement : Hashable,Sendable,Codable,Identifiable{
-    var id: Int
-    var albumName : String
-    var artistList : [ArtistListModelElement]
-    var songList : [SongListModelElement]
-    
+    let id: Int
+    let albumName: String
+    let artistList: [ArtistListModelElement]
+    let songList: [SongListModelElement]
 }
 
 class LibraryViewModel: ObservableObject{
-    var top5list : [libraryListModelElement] = []
+   @Published var top5list :libraryListModelElement?
 
     var userToken : String = UserDefaults.standard.value(forKey: "USER_KEY") as! String
     
     func getTopAlbumProfile(id: Int) {
-
+        print(id)
         
         guard let url = URL(string: "\(baseUrl)/api/user/getAlbum/\(id)") else { return }
-
+        print(url)
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = [
             "Content-Type": "application/json",
             "Authorization":"Bearer \(userToken)"
         ]
-        
-        URLSession.shared.dataTask(with: request) { (data, response, error) in
-            do {
-                if let data = data{
-                                        let result = try! JSONDecoder().decode( [libraryListModelElement].self, from: data)
-                    
-                    DispatchQueue.main.async {
-                        [self] in
-                        self.top5list = result
-                        print(top5list)
-                    }
-                   
-                }
-                else if let error = error {
-                    print("HTTP Request Failed \(error)")
-                }
-            }
+       
+        URLSession.shared.dataTask(with: request) { data, response, error in
             
-        }.resume()
+                    if let data = data {
+                        
+                        if let decodedData = try? JSONDecoder().decode(libraryListModelElement.self, from: data) {
+                            DispatchQueue.main.async {
+                                self.top5list = decodedData                                
+                            }
+                        }
+                        
+                    }
+                }.resume()
         
     }
 

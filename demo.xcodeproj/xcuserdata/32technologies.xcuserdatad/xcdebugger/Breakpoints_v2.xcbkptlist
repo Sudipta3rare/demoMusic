@@ -56,7 +56,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "FE9966A5-5C95-47F9-B8E5-0FF0B9169A22"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "demo/Models/AudioManager.swift"
@@ -66,36 +66,67 @@
             endingLineNumber = "58"
             landmarkName = "playAudioSound(sound:)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0F43E1D9-4C95-4AE3-AD2B-A93A39DC935F"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "demo/Models/LibraryViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "33"
+            endingLineNumber = "33"
+            landmarkName = "getTopAlbumProfile(id:)"
+            landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "FE9966A5-5C95-47F9-B8E5-0FF0B9169A22 - a0fb2c6fc34b13d5"
+                  uuid = "0F43E1D9-4C95-4AE3-AD2B-A93A39DC935F - ee65333e95b5145"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "demo.AudioManager.playAudioSound(sound: Swift.String) -&gt; ()"
+                  symbolName = "demo.LibraryViewModel.getTopAlbumProfile(id: Swift.Int) -&gt; ()"
                   moduleName = "demo"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/32technologies/Desktop/Swiftui/demo/demo/Models/AudioManager.swift"
+                  urlString = "file:///Users/32technologies/Desktop/Swiftui/demo/demo/Models/LibraryViewModel.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "58"
-                  endingLineNumber = "58"
-                  offsetFromSymbolStart = "1164">
+                  startingLineNumber = "36"
+                  endingLineNumber = "36"
+                  offsetFromSymbolStart = "388">
                </Location>
                <Location
-                  uuid = "FE9966A5-5C95-47F9-B8E5-0FF0B9169A22 - a0fb2c6fc34b13d5"
+                  uuid = "0F43E1D9-4C95-4AE3-AD2B-A93A39DC935F - ee65333e95b5145"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "demo.AudioManager.playAudioSound(sound: Swift.String) -&gt; ()"
+                  symbolName = "demo.LibraryViewModel.getTopAlbumProfile(id: Swift.Int) -&gt; ()"
                   moduleName = "demo"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/32technologies/Desktop/Swiftui/demo/demo/Models/AudioManager.swift"
+                  urlString = "file:///Users/32technologies/Desktop/Swiftui/demo/demo/Models/LibraryViewModel.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "58"
-                  endingLineNumber = "58"
-                  offsetFromSymbolStart = "932">
+                  startingLineNumber = "36"
+                  endingLineNumber = "36"
+                  offsetFromSymbolStart = "828">
+               </Location>
+               <Location
+                  uuid = "0F43E1D9-4C95-4AE3-AD2B-A93A39DC935F - ee65333e95b5145"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "demo.LibraryViewModel.getTopAlbumProfile(id: Swift.Int) -&gt; ()"
+                  moduleName = "demo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/32technologies/Desktop/Swiftui/demo/demo/Models/LibraryViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "36"
+                  endingLineNumber = "36"
+                  offsetFromSymbolStart = "1968">
                </Location>
             </Locations>
          </BreakpointContent>

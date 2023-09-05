@@ -113,27 +113,24 @@ struct songHListCircle: View {
         }
     }
 
-
-
-
 struct SongListAlbumTile: View{
     var song: AlbumListModelElement
     var body: some View{
-        VStack(alignment: .center){
-            AsyncImage(
-                url: URL(string: baseUrl+"\(song.imgUrl)"),
-                content: { image in
-                    image.resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(maxWidth: 200, maxHeight: 100).cornerRadius(10)
-                },
-                placeholder: {
-                   Text("Loading")
-                }
-            )
-           
-            
-            Text(song.name).font(.custom("Poppins-Regular", size: 12)).foregroundColor(.white).frame(maxWidth: .infinity, alignment: .leading)
+        NavigationLink(destination: TopSongsView(albumId: song.id)) {
+            VStack(alignment: .center){
+                AsyncImage(
+                    url: URL(string: baseUrl+"\(song.imgUrl)"),
+                    content: { image in
+                        image.resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxWidth: 200, maxHeight: 100).cornerRadius(10)
+                    },
+                    placeholder: {
+                       Text("Loading")
+                    }
+                )
+                Text(song.name).font(.custom("Poppins-Regular", size: 12)).foregroundColor(.white).frame(maxWidth: .infinity, alignment: .leading)
+            }
         }
     }
 }

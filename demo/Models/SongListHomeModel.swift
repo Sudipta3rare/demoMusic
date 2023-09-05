@@ -20,9 +20,10 @@ struct SongListModel : Hashable,Codable,Identifiable{
 
 struct SongListModelElement: Hashable,Sendable,Codable,Identifiable {
     let id: Int
-    let name, artistName, imgURL, songFile: String
-  
-    typealias SongListModell = [SongListModelElement]
+    let name: String
+    let artistName: String
+    let imgURL: String
+    let songFile: String
 }
 
 struct AlbumListModelElement: Hashable,Codable,Identifiable {
@@ -32,7 +33,8 @@ struct AlbumListModelElement: Hashable,Codable,Identifiable {
 
 struct ArtistListModelElement: Hashable,Sendable,Codable,Identifiable {
     let id: Int
-    let name, imgURL: String
+    let name: String
+    let imgURL: String
 }
 
 class SongListViewModel : ObservableObject{

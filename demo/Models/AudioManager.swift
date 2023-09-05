@@ -16,12 +16,12 @@ final class AudioManager : ObservableObject{
     var totalDuration : Double?
     @Published var speed = 0.0{            willSet{
         ObjectWillChangePublisher().send()
-    }
-}
+    }}
     
 
     
  
+    
     func playSound(sound: String){
             if let url = URL(string: sound) {
                 print(url)
