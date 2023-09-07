@@ -10,6 +10,10 @@ import AVKit
 
 
 final class AudioManager : ObservableObject{
+    
+    var songList : [SongListModelElement] = []
+    var songIndex : Int = 0
+    
     var player : AVPlayer?
     var playerItem : AVPlayerItem?
     var playerAudio : AVAudioPlayer?
@@ -40,7 +44,6 @@ final class AudioManager : ObservableObject{
     
     func playAudioSound(sound: String){
         guard let url = URL(string: sound) else {return}
-        print()
 
         do {
              // Configure and activate the AVAudioSession

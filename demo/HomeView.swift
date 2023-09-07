@@ -30,7 +30,8 @@ struct songHList: View {
                                             .frame(maxWidth: 200, maxHeight: 100).cornerRadius(10)
                                     },
                                     placeholder: {
-                                        Text("Loading").foregroundColor(.white)
+                                        ProgressView()
+                                            .progressViewStyle(.circular).tint(.white).padding()
                                     }
                                 )
                                
@@ -95,7 +96,8 @@ struct songHListCircle: View {
                                     }
                             },
                             placeholder: {
-                               
+                                ProgressView()
+                                    .progressViewStyle(.circular).tint(.white).padding()
                             }
                         )
 //                        Image(song.imgURL)
@@ -116,7 +118,7 @@ struct songHListCircle: View {
 struct SongListAlbumTile: View{
     var song: AlbumListModelElement
     var body: some View{
-        NavigationLink(destination: TopSongsView(albumId: song.id)) {
+        NavigationLink(destination: TopSongsView(albumId: song.id, albumCover: baseUrl+song.imgUrl)) {
             VStack(alignment: .center){
                 AsyncImage(
                     url: URL(string: baseUrl+"\(song.imgUrl)"),
@@ -126,7 +128,8 @@ struct SongListAlbumTile: View{
                             .frame(maxWidth: 200, maxHeight: 100).cornerRadius(10)
                     },
                     placeholder: {
-                       Text("Loading")
+                        ProgressView()
+                            .progressViewStyle(.circular).tint(.white).padding()
                     }
                 )
                 Text(song.name).font(.custom("Poppins-Regular", size: 12)).foregroundColor(.white).frame(maxWidth: .infinity, alignment: .leading)

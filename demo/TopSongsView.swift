@@ -12,6 +12,7 @@ struct TopSongsView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @StateObject var lvm = LibraryViewModel()
     @State var albumId : Int?
+    var albumCover : String?
     var headingBack: some View{
        
             HStack {
@@ -37,7 +38,18 @@ struct TopSongsView: View {
             
             ScrollView{
                 headingBack.padding(.bottom)
-                Image("top10").resizable().aspectRatio(contentMode: .fill).frame(width: 100, height: 100).padding(.bottom)
+                
+                AsyncImage(
+                    url: URL(string: albumCover ?? ""),
+                    content: { image in
+                        image.resizable().aspectRatio(contentMode: .fill).frame(width: 100, height: 100).padding(.bottom)
+                    },
+                    placeholder: {
+                        ProgressView()
+                            .progressViewStyle(.circular).tint(.white).padding()
+                    }
+                )
+                
                 Text(lvm.top5list?.albumName ?? "Song Album").font(.custom("Righteous", size: 17))
                 if let noOfTracks = lvm.top5list?.songList.count{
                     Text("\(noOfTracks) Tracks").font(.custom("Poppins-Italic", size: 12))
@@ -99,7 +111,6 @@ struct TopSongsView: View {
 //            currentPlayingBottom(lvm: lvm)
         }.navigationBarBackButtonHidden(true)
             .onAppear{
-                print("on appear")
             lvm.getTopAlbumProfile(id: albumId ?? 2)
         }
 

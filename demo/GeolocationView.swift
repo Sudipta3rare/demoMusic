@@ -173,7 +173,8 @@ struct circularImageSmlAsync : View{
                 }
             },
             placeholder: {
-                Text("Loading").foregroundColor(.white)
+                ProgressView()
+                    .progressViewStyle(.circular).tint(.white).padding()
             }
         )
         

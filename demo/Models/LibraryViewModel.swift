@@ -30,10 +30,8 @@ class LibraryViewModel: ObservableObject{
     var userToken : String = UserDefaults.standard.value(forKey: "USER_KEY") as! String
     
     func getTopAlbumProfile(id: Int) {
-        print(id)
         
         guard let url = URL(string: "\(baseUrl)/api/user/getAlbum/\(id)") else { return }
-        print(url)
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = [
             "Content-Type": "application/json",
@@ -43,7 +41,6 @@ class LibraryViewModel: ObservableObject{
         URLSession.shared.dataTask(with: request) { data, response, error in
             
                     if let data = data {
-                        
                         if let decodedData = try? JSONDecoder().decode(libraryListModelElement.self, from: data) {
                             DispatchQueue.main.async {
                                 self.top5list = decodedData                                

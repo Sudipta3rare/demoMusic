@@ -49,7 +49,8 @@ struct PlayMusicView: View {
                         image.resizable().aspectRatio(contentMode: .fill).frame(width: UIScreen.main.bounds.size.width/1.1, height: 250 ).cornerRadius(30).padding(.bottom)
                     },
                     placeholder: {
-                        Text("Loading").foregroundColor(.white)
+                        ProgressView()
+                            .progressViewStyle(.circular).tint(.white).padding()
                     }
                 )
 
