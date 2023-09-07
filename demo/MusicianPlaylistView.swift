@@ -10,7 +10,8 @@ import SwiftUI
 struct MusicianPlaylistView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State var isFollowed = false
-//    @StateObject var mpm: MusicianPlaylistModel
+    var musicianId : Int?
+    @StateObject var mpm = MusicianPlaylistViewModel()
     
     var headerLogo: some View{
         Image("logo01").resizable().aspectRatio(contentMode: .fit).frame(height: 50).padding(.horizontal).frame(maxHeight: .infinity, alignment: .top)
@@ -64,9 +65,9 @@ struct MusicianPlaylistView: View {
                     Image("header01").resizable().aspectRatio(contentMode: .fill).frame(height: 200)
                         .frame(maxWidth:UIScreen.main.bounds.size.width )
                     NavigationLink(destination: MusicianInfoView() , label: {
-                        VStack{
-                        Text("Jimi Hendrix").font(.custom("Righteous", size: 30))
-                        Text("30,100,000 monthly listeners").font(.custom("Poppins-Regular", size: 12))
+                        VStack(alignment: .leading){
+                            Text("\(mpm.artistPlaylist?.name ?? "Aritst")").font(.custom("Righteous", size: 30))
+                            Text("\(mpm.artistPlaylist?.listeners ?? 0) monthly listeners").font(.custom("Poppins-Regular", size: 12))
                     }})
                     .foregroundColor(.white)
                     //
@@ -81,17 +82,25 @@ struct MusicianPlaylistView: View {
                         VStack(alignment: .leading) {
                             Section(header: Text("Popular").font(.custom("Poppins-Regular", size: 18))) {
                                 LazyVStack{
-                                    ForEach(popularSongsPlaylist, id: \.id ){
-                                        pl in songsListPopular(popularSong: pl)
+                                    if let plList = mpm.artistPlaylist?.popularSongs
+                                    {
+                                        ForEach(Array(plList.enumerated()), id: \.element ){
+                                            index,pl in songsListPopular(popularSong: pl, index: index)
+                                        }
                                     }
+                                    
                                 }.padding(.bottom)
                             }
                             Section(header:Text("Popular Release").font(.custom("Poppins-Regular", size: 18))){
                                 VStack {
                                     LazyVStack{
-                                        ForEach(popularAlbumsPlaylist, id: \.id ){
-                                            pli in albumListPopular(popularAlbum: pli)
+                                        if let plList = mpm.artistPlaylist?.popularReleasesAlbums
+                                        {
+                                            ForEach(Array(plList.enumerated()), id: \.element ){
+                                                index,pli in NavigationLink(destination: TopSongsView(albumId: pli.id,albumCover: "\(baseUrl)\(pli.imgUrl)")){albumListPopular(popularAlbumList: pli)}
+                                            }
                                         }
+                                        
                                     }
                                     Button{
                                         print("see discovery")
@@ -107,19 +116,23 @@ struct MusicianPlaylistView: View {
                         
                             
                             Section(header: Text("Artist Songs").font(.custom("Poppins-Regular", size: 18))){
-                                ScrollView(.horizontal,showsIndicators: false) {
-//                                    LazyHStack(spacing: 20){
-//                                        ForEach(albumList, id: \.id){
-//                                            lis in SongListTile(song: lis)
-//                                        }
-//                                    }
-                                }.padding(.bottom)
+                                ScrollView(showsIndicators: false) {
+                                    LazyVStack{
+                                        if let plList = mpm.artistPlaylist?.popularSongs
+                                        {
+                                            ForEach(Array(plList.enumerated()), id: \.element ){
+                                                index,pl in songsListPopular(popularSong: pl, index: index)
+                                            }
+                                        }
+                                        
+                                    }.padding(.bottom)
+                                }
                             }
                             
                             Section(header: Text("About").font(.custom("Poppins-Regular", size: 18))){
                                 ZStack(alignment: .bottomLeading) {
                                     Image("header01").resizable().frame(height: 200)
-                                    HStack(alignment: .lastTextBaseline){Text("3,71,70,493").font(.custom("Poppins-Regular", size: 20))
+                                    HStack(alignment: .lastTextBaseline){Text("\(mpm.artistPlaylist?.listeners ?? 0)").font(.custom("Poppins-Regular", size: 20))
                                         Text("Monthly Listeners").font(.custom("Poppins-Regular", size: 12))
                                         Spacer()
                                         Image(systemName: "arrow.right.circle.fill").font(.system(size: 25))
@@ -127,15 +140,15 @@ struct MusicianPlaylistView: View {
                                 }.padding(.bottom)
                             }
                            
-                            Section(header: Text("Fans Also Like").font(.custom("Poppins-Regular", size: 18))){
-                                ScrollView(.horizontal, showsIndicators: false) {
-                                    HStack(spacing:20) {
-//                                        ForEach(songList, id: \.id){
-//                                            list in SongListTileCircle(song: list)
-//                                        }
-                                    }
-                                }
-                            }.padding(.bottom)
+//                            Section(header: Text("Fans Also Like").font(.custom("Poppins-Regular", size: 18))){
+//                                ScrollView(.horizontal, showsIndicators: false) {
+//                                    HStack(spacing:20) {
+////                                        ForEach(songList, id: \.id){
+////                                            list in SongListTileCircle(song: list)
+////                                        }
+//                                    }
+//                                }
+//                            }.padding(.bottom)
                             
                         }
                         Spacer()
@@ -148,24 +161,34 @@ struct MusicianPlaylistView: View {
 
         
             }
-        }.navigationBarBackButtonHidden()
+        }.navigationBarBackButtonHidden().onAppear{
+            mpm.getMusicanPlaylist(id: 	musicianId ?? 16)
+        }
     }
 }
 
 struct albumListPopular : View{
-    var popularAlbum : MusicianPlaylistModel
+    var popularAlbumList : AlbumListModelElement
     var body: some View
+    
     {
         HStack{
-            Image(popularAlbum.imgName).resizable()
-                .aspectRatio(contentMode: .fill).frame(width:90,height: 90).cornerRadius(10).overlay(
-                    RoundedRectangle(cornerRadius: 10)
-                     
-                        .stroke(.white, lineWidth: 0.5)
-                )
+            
+            AsyncImage(
+                url: URL(string: "\(baseUrl)\(popularAlbumList.imgUrl)"),
+                content: { image in
+                    image.resizable().aspectRatio(contentMode: .fill).frame(width:90,height: 90).cornerRadius(10).overlay(RoundedRectangle(cornerRadius: 10).stroke(.white, lineWidth: 0.5)
+                    )
+                },
+                placeholder: {
+                    ProgressView()
+                        .progressViewStyle(.circular).tint(.white).padding()
+                }
+            )
+            
             VStack(alignment: .leading){
-                Text(popularAlbum.name)
-                Text(popularAlbum.descrption)
+                Text("\(popularAlbumList.name) ")
+//                Text(popularAlbum.artistPlaylist?.popularReleasesAlbums[index])
             }
             .font(.custom("Poppins-Regular", size: 13))
             .padding(.horizontal,10)
@@ -176,14 +199,16 @@ struct albumListPopular : View{
 }
 
 struct songsListPopular : View{
-    var popularSong: MusicianPlaylistModel
+    var popularSong: SongListModelElement
+    var index : Int
     var body : some View{
         HStack{
-            Text("\(popularSong.id)").padding(.horizontal,10)
-            circularImageSml(imgName: popularSong.imgName)
+            
+            Text("\(index+1)").padding(.horizontal,10)
+            circularImageSmlAsync(imgName: "\(baseUrl)\(popularSong.imgURL)")
             VStack(alignment: .leading){
                 Text(popularSong.name)
-                Text(popularSong.descrption)
+                Text(popularSong.artistName)
             }.padding(.horizontal,10)
             Spacer()
             optionButton
@@ -195,6 +220,6 @@ struct songsListPopular : View{
 
 struct MusicianPlaylistView_Previews: PreviewProvider {
     static var previews: some View {
-        MusicianPlaylistView()
+        MusicianPlaylistView( mpm: MusicianPlaylistViewModel())
     }
 }

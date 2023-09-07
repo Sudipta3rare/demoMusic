@@ -15,6 +15,47 @@ struct MusicianPlaylistModel : Hashable,Codable,Identifiable{
     
 }
 
+
+struct MusicianPlaylistModelElement : Hashable, Codable, Identifiable{
+    var id: Int?
+    var name: String?
+    var imgUrl: String
+    var listeners : Int?
+    var popularSongs : [SongListModelElement]?
+    var popularReleasesAlbums : [AlbumListModelElement]?
+    var artistSongs : [SongListModelElement]?
+}
+
+final class MusicianPlaylistViewModel : ObservableObject{
+    @Published  var artistPlaylist : MusicianPlaylistModelElement?
+    var userToken : String = UserDefaults.standard.value(forKey: "USER_KEY") as! String
+
+    
+    func getMusicanPlaylist (id :Int) {
+        guard let url = URL(string: "\(baseUrl)/api/user/getArtist/\(id)") else { return }
+        var request = URLRequest(url: url)
+        request.allHTTPHeaderFields = [
+            "Content-Type": "application/json",
+            "Authorization":"Bearer \(userToken)"
+        ]
+       
+        URLSession.shared.dataTask(with: request) { data, response, error in
+                    if let data = data {
+                        if let decodedData = try? JSONDecoder().decode(MusicianPlaylistModelElement.self, from: data) {
+                            print(decodedData)
+                            DispatchQueue.main.async {
+                                self.artistPlaylist = decodedData
+                        
+                            }
+                        }
+                        
+                    }
+                }.resume()
+    }
+    
+    
+}
+
 var popularSongsPlaylist: [MusicianPlaylistModel] = [
     MusicianPlaylistModel(
             id: 1, name: "Lore Ipsum", imgName: "m01", descrption: "200,100"),

@@ -84,34 +84,34 @@ struct songHListCircle: View {
        @State var song: ArtistListModelElement
         var body: some View{
            
-              
-                    VStack{
-                        AsyncImage(
-                            url: URL(string: baseUrl+"\(song.imgURL)"),
-                            content: { image in
-                                image.resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(maxWidth: 200, maxHeight: 100).clipShape(Circle()).overlay{
-                                        Circle().stroke(Color(hex: 0x1a1a1a), lineWidth: 8)
-                                    }
-                            },
-                            placeholder: {
-                                ProgressView()
-                                    .progressViewStyle(.circular).tint(.white).padding()
-                            }
-                        )
-//                        Image(song.imgURL)
-//                            .resizable()
-//                            .aspectRatio(contentMode: .fit)
-//                            .frame(width: 130, height: 130)
-//                            .clipShape(Circle()).overlay{
-//                                Circle().stroke(Color(hex: 0x1a1a1a), lineWidth: 8)
-//                            }
-                        
-                        Text(song.name ).font(.custom("Poppins-Regular", size: 12)).foregroundColor(.white).frame(maxWidth: .infinity, alignment: .center)
-                    }
+            NavigationLink(destination:MusicianPlaylistView(musicianId: song.id)) {
+                VStack{
+                    AsyncImage(
+                        url: URL(string: baseUrl+"\(song.imgURL)"),
+                        content: { image in
+                            image.resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(maxWidth: 200, maxHeight: 100).clipShape(Circle()).overlay{
+                                    Circle().stroke(Color(hex: 0x1a1a1a), lineWidth: 8)
+                                }
+                        },
+                        placeholder: {
+                            ProgressView()
+                                .progressViewStyle(.circular).tint(.white).padding()
+                        }
+                    )
+                    //                        Image(song.imgURL)
+                    //                            .resizable()
+                    //                            .aspectRatio(contentMode: .fit)
+                    //                            .frame(width: 130, height: 130)
+                    //                            .clipShape(Circle()).overlay{
+                    //                                Circle().stroke(Color(hex: 0x1a1a1a), lineWidth: 8)
+                    //                            }
                     
-          
+                    Text(song.name ).font(.custom("Poppins-Regular", size: 12)).foregroundColor(.white).frame(maxWidth: .infinity, alignment: .center)
+                }
+                
+            }
         }
     }
 
